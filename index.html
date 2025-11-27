@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIZ</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0e6ff 0%, #ffe4e1 100%); 
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #8a2be2; 
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+
+        .question-block {
+            text-align: left;
+            margin-bottom: 25px;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-block p {
+            font-weight: bold;
+            color: #4b0082; 
+            margin-bottom: 10px;
+        }
+
+        .option-label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .option-label:hover {
+            background-color: #f3f3ff;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+            font-size: 1em;
+        }
+
+        #submit-btn {
+            background-color: #ff69b4; 
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.5);
+        }
+
+        #submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.7);
+        }
+
+        .hidden-btn {
+            background-color: #48d1cc; 
+            color: white;
+            box-shadow: 0 4px 15px rgba(72, 209, 204, 0.5);
+        }
+
+        .hidden-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(72, 209, 204, 0.7);
+        }
+
+        .result-box, .declaration-box {
+            margin-top: 40px;
+            padding: 25px;
+            border-radius: 15px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .result-box {
+            background-color: #fffacd; 
+            border: 2px dashed #ffa07a; 
+        }
+
+        .declaration-box {
+            background-color: #e0ffff; 
+            border: 2px solid #ff69b4; 
+        }
+
+        .declaration-box h2 {
+            color: #ff69b4;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .declaration-answer {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #4b0082;
+            text-align: left;
+        }
+
+        .correct-option {
+            font-weight: bold;
+            color: #ff1493;
+        }
+
+        .wrong-answer-text {
+            color: #d9534f; 
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.1em;
+            padding: 10px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>O Quiz Sobre Mim</h1>
+        <p>Responda com o que você acha que é o correto.</p>
+        
+        <form id="quiz-form">
+            </form>
+        
+        <button id="submit-btn" type="button">Enviar Respostas</button>
+
+        <div id="result-box" class="result-box" style="display:none;">
+            <h2>Seu resultado</h2>
+            <div id="wrong-answers">
+                </div>
+            <button id="correct-btn" type="button" class="hidden-btn">Ver as alternativas corretas</button>
+        </div>
+
+        <div id="declaration-box" class="declaration-box" style="display:none;">
+            <h2>As alternativas reais</h2>
+            <div id="correct-answers">
+                </div>
+        </div>
+
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "1. O que eu mais gosto de fazer?",
+                options: [
+                    "A) Jogar futebol",
+                    "B) Ler livros",
+                    "C) Assistir filmes",
+                    "D) Assistir o vasco",
+                ],
+                correctAnswer: "E) Passar um tempo com a familia, e com a menina mais linda e perfeita que eu poderia conhecer... Voce! Te amo."
+            },
+            {
+                question: "2. Qual o meu maior sonho?",
+                options: [
+                    "A) Viajar pelo mundo",
+                    "B) Ser muito rico",
+                    "C) Ter um carro de luxo",
+                    "D) Ver o Vasco ser campeao da libertadores",
+                ],
+                correctAnswer: "E) Viajar pelo mundo com voce minha princesinha, construir uma familia linda e honesta com voce, te dar muito amor e carinho, ser parceiro, e te fazer feliz todos os dias da minha vida."
+            },
+            {
+                question: "3. Qual o meu objetivo para o ano que vem?",
+                options: [
+                    "A) Ganhar mais dinheiro",
+                    "B) Receber uma promoção no trabalho",
+                    "C) Comprar um carro",
+                    "D) Viajar",
+                ],
+                correctAnswer: "E) Namorar com voce Camila, e poder evoluir muito no nosso relacionamento."
+            },
+            {
+                question: "4. Qual a coisa mais importante minha vida?",
+                options: [
+                    "A) O computador",
+                    "B) A carreira profissional",
+                    "C) Os amigos",
+                    "D) O dinheiro"
+                ],
+                correctAnswer: "E) A familia e voce, Camila, que sao as coisas mais importantes da minha vida."
+            },
+            {
+                question: "5. Qual o meu maior medo?",
+                options: [
+                    "A) Altura",
+                    "B) Guerras",
+                    "C) Insetos",
+                    "D) Ficar sozinho"
+                ],
+                correctAnswer: "Não conseguir realizar os sonhos, como casar com voce, te fazer feliz, não poder te dar uma vida boa, etc."
+            }
+        ];
+
+        const quizForm = document.getElementById('quiz-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultBox = document.getElementById('result-box');
+        const wrongAnswersDiv = document.getElementById('wrong-answers');
+        const correctBtn = document.getElementById('correct-btn');
+        const declarationBox = document.getElementById('declaration-box');
+        const correctAnswersDiv = document.getElementById('correct-answers');
+
+        function loadQuiz() {
+            quizData.forEach((item, index) => {
+                const qNumber = index + 1;
+                const questionHtml = `
+                    <div class="question-block">
+                        <p>${item.question}</p>
+                        ${item.options.map((option, i) => `
+                            <label class="option-label">
+                                <input type="radio" name="question${qNumber}" value="${String.fromCharCode(65 + i)}">
+                                <span></span> ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                quizForm.innerHTML += questionHtml;
+            });
+        }
+
+        submitBtn.addEventListener('click', () => {
+            wrongAnswersDiv.innerHTML = `
+                <p class="wrong-answer-text">
+                    **0 acertos de ${quizData.length}! po, esperava mais kkkkkkk**
+                </p>
+                <p class="wrong-answer-text">
+                    Clique abaixo para ver o verdadeiro motivo de cada pergunta.
+                </p>
+            `;
+
+            resultBox.style.display = 'block';
+
+            submitBtn.style.display = 'none';
+            correctBtn.style.display = 'block';
+
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        correctBtn.addEventListener('click', () => {
+            correctAnswersDiv.innerHTML = quizData.map((item, index) => `
+                <div class="declaration-answer">
+                    **A Pergunta ${index + 1} SÓ TINHA UMA RESPOSTA CORRETA:**
+                    <span class="correct-option">${item.correctAnswer}</span>
+                </div>
+            `).join('');
+
+            declarationBox.style.display = 'block';
+
+            correctBtn.style.display = 'none';
+
+            declarationBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        loadQuiz();
+    </script>
+</body>
+</html>
